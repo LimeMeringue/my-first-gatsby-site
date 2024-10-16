@@ -15,12 +15,13 @@ module.exports = {
       }
     },
     "gatsby-plugin-mdx",
+    "gatsby-plugin-styled-components",
     {
       resolve: "gatsby-source-graphql",
       options: {
         // This type will contain remote schema Query type
         typeName: "DrupalGraqhQL",
-        // This is field under which it's accessible
+        // This is field under which it's accessible 
         fieldName: "Drupal",
         // Url to query from
         // url: "http://kecatalog.dev.wwbtc.com/graphql",

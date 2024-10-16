@@ -8,33 +8,49 @@ exports.createPages = async ({ graphql, actions }) => {
   // Query for markdown nodes to use in creating pages.
   const result = await graphql(
     `
-      query {
-        Drupal {
-            nodeRecipes(first: 20) {
-                nodes {
-                    title
-                    id
-                    cookingTime
-                    numberOfServings
-                    
-                }
+    query {
+      Drupal {
+      nodeRecipes(first: 20) {
+        edges {
+          node {
+            title
+            cookingTime
+            preparationTime
+            difficulty
+            ingredients
+            numberOfServings
+            recipeInstruction {
+              processed
             }
+            summary {
+              processed
+            }
+            author {
+              displayName
+            }
+            mediaImage {
+              mediaImage {
+                url
+              }
+            }
+          }
         }
+      }
     }
-  `
+    }
+    `
   )
 
-  // Creates pages for each markdown file.
+  // Create pages for each markdown file.
   const recipePostTemplate = path.resolve(`src/templates/recipe-post.js`)
-  result.data.Drupal.nodeRecipes.nodes.forEach( node => {
+  result.data.Drupal.nodeRecipes.edges.forEach(({node}) => {
     createPage({
       path: `/recipe/${node.title}`,
       component: recipePostTemplate,
-      // In your blog post template's graphql query, you can use pagePath
-      // as a GraphQL variable to query for data from the markdown file.
       context: {
         recipe: node,
       },
-    })
-  })
+    });
+  }
+  );
 }

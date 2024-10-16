@@ -25,18 +25,16 @@ const recipePost = ({ data }) => {
 export const query = graphql`
   query {
         Drupal {
-            nodeRecipes(first: 20) {
-                nodes {
-                    title
-                    id
-                    cookingTime
-                    numberOfServings
-                    
-                }
-            }
+        nodeRecipes(first: 10) {
+        nodes {
+            title
+            id
+        }
         }
     }
+    }
 `
+
 
 export const Head = () => <Seo title="Recipes" />
 
