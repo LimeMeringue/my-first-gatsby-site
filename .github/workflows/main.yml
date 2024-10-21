@@ -1,0 +1,42 @@
+name: Remote SSH
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2.3.1
+
+      - name: Install Node.js
+        uses: actions/setup-mode@v1
+        with:
+          node-version: '18.x'
+
+      - name: Install Proj Dependencies
+        run: npm install
+
+      - name: Install Gatsby CLI
+        run: npm install -g gatsby-cli
+
+      - name: Build
+        run: gastby build --prefix-paths
+      
+      - name: Verify Build
+        run: ls -la public
+      
+      # copy build to remote server
+      - name: Copy public folder to remote server
+        uses: appleboy/scp-action@master #v0.1.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          source: "public/*,docker-compose.yml"
+          target: "site/html" #change path
+          strip_components: 2
+
