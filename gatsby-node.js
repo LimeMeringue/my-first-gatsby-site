@@ -10,33 +10,56 @@ exports.createPages = async ({ graphql, actions }) => {
     `
     query {
       Drupal {
-      nodeRecipes(first: 20) {
-        edges {
-          node {
-            title
-            cookingTime
-            preparationTime
-            difficulty
-            ingredients
-            numberOfServings
-            recipeInstruction {
-              processed
-            }
-            summary {
-              processed
-            }
-            author {
-              displayName
-            }
-            mediaImage {
+        nodeRecipes(first: 20) {
+          edges {
+            node {
+              title
+              cookingTime
+              preparationTime
+              difficulty
+              ingredients
+              numberOfServings
+              recipeInstruction {
+                processed
+              }
+              summary {
+                processed
+              }
+              author {
+                displayName
+              }
               mediaImage {
-                url
+                mediaImage {
+                  url
+                }
               }
             }
           }
         }
+        nodeArticles(first: 10) {
+          edges {
+            node {
+              title
+              author {
+                displayName
+                created
+              }
+              body {
+                value
+                summary
+                processed
+                format
+              }
+              mediaImage {
+                mediaImage {
+                  url
+                }
+              }
+            }
+          }
+        }
+
       }
-    }
     }
     `
   )
@@ -49,6 +72,18 @@ exports.createPages = async ({ graphql, actions }) => {
       component: recipePostTemplate,
       context: {
         recipe: node,
+      },
+    });
+  }
+  );
+
+  const articlePostTemplate = path.resolve(`src/templates/article-post.js`)
+  result.data.Drupal.nodeArticles.edges.forEach(({node}) => {
+    createPage({
+      path: `/article/${node.title}`,
+      component: articlePostTemplate,
+      context: {
+        article: node,
       },
     });
   }

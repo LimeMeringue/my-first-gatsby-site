@@ -23,7 +23,7 @@ const Layout = ({ pageTitle, children }) => {
       <div className={container}>
         <header className={siteTitle}>{data.site.siteMetadata.title}</header>
         <nav>
-            <ul className={navLinks}>
+          <ul className={navLinks}>
             <li className={navLinkItem}>
                 <Link to="/" className={navLinkText}>
                 Home
@@ -35,16 +35,21 @@ const Layout = ({ pageTitle, children }) => {
                 </Link>
             </li>
             <li className={navLinkItem}>
-            <Link to="/blog" className={navLinkText}>
-              Blog
-            </Link>
-          </li>
-          <li className={navLinkItem}>
-            <Link to="/recipe" className={navLinkText}>
-              Recipes
-            </Link>
-          </li>
-            </ul>
+                <Link to="/blog" className={navLinkText}>
+                  Blog
+                </Link>
+            </li>
+            <li className={navLinkItem}>
+                <Link to="/recipe" className={navLinkText}>
+                  Recipes
+                </Link>
+            </li>
+            <li className={navLinkItem}>
+                <Link to="/article" className={navLinkText}>
+                  Articles
+                </Link>
+            </li>
+          </ul>
         </nav>
         <main>
             <h1 className={heading}>{pageTitle}</h1>
