@@ -25,18 +25,28 @@ jobs:
         run: npm install -g gatsby-cli
 
       - name: Build
-        run: gatsby build 
+        run: gatsby build
 
       - name: Verify build
         run: ls -la public
 
       - name: Copy files via SCP
         uses: appleboy/scp-action@master
-        # v0.1.0
         with:
           host: ${{ secrets.HOST }}         
           username: ${{ secrets.USER }}     
           key: ${{ secrets.PRIVATE_KEY }} 
-          source: "public/*,docker-compose.yml"
-          target: "site/html"
+          source: "public/"
+          target: "site/newBranch"
           strip_components: 1
+
+      - name: Finalize Deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            rm -rf site/mainBranch
+            mv site/newBranch site/mainBranch
+            mkdir site/newBranch
