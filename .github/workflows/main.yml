@@ -50,3 +50,12 @@ jobs:
             rm -rf site/mainBranch
             mv site/newBranch site/mainBranch
             mkdir site/newBranch
+
+            CONTAINER_NAME="student008"
+
+            if ! docker ps -q --filter "name=$CONTAINER_NAME"; then
+              echo "Container $CONTAINER_NAME is down. Starting it now..."
+              docker start $CONTAINER_NAME
+            else
+              echo "Container $CONTAINER_NAME is already running."
+            fi
